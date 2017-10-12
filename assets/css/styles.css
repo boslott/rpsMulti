@@ -11,8 +11,178 @@
 
 /*  Body */
 
+  * {
+    /*outline: 1px dotted red;*/
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 62.5%;
+  }
+
+  body {
+    position: relative;
+    background-image: url("../images/rpsPurpleBG.png");
+    background-size: cover;
+  }
+
+  .site-body {
+
+    /*width: 100%;*/
+    padding: 5rem 0;
+  }
+
 /* Site Header */
 
 /*  Site Content */
 
+  .active-window-row {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .active-window {
+    min-height: 75vh;
+    /*padding: 1%;*/
+    border-style: solid;
+    border-color: #275260;
+    border-width: 0.4rem;
+    border-radius: 5rem;
+    background-color: #36846f;
+    /*background-color: #58407e;*/
+    /*background-color: #845a97;*/
+    /*background-color: rgba(255, 255, 255, 0);*/
+    box-shadow: 0.1rem 0.1rem 0.1rem #118f00;
+  }
+
+  .game-top-level {
+    /*outline: 1px dotted red;*/
+  }
+
+  .enter-name-top {
+    margin-top: 8rem;
+  }
+
+  .enter-name-header-row {
+
+  }
+
+  .enter-name-input {
+    width: 30%;
+    margin-bottom: 1rem;
+    border-radius: 2rem;
+  }
+
+  .game-views-row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .game-views {
+    /*outline: 1px dotted red;*/
+    padding: 10% 0;
+    margin: 2rem 3rem 0;
+    width: 33%;
+    border-style: solid;
+    border-width: 0.15rem;
+    border-color: #000;
+    background-color: #fff;
+  }
+
+  #gameView {
+    background-image: url("../images/redBlueVSreal.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .game-views-headers-row {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .game-views-headers-col {
+
+  }
+
+  .game-views-headers {
+    /*outline: 1px dotted red;*/
+    color: #513b75;
+    font-size: 3.4rem;
+    text-shadow: 0.1rem 0.1rem 0.1rem #052600;
+  }
+
+  .game-data-row {
+  }
+
+  .scoreboard {
+    padding: 5% 3% 5% 5%;
+  }
+
+  .scoreboard-data-row {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    padding-right: 3rem;
+  }
+
+  .scoreboard-data-property-header {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .scoreboard-data-box {
+    width: 4rem;
+    height: 4rem;
+    background-color: #fff;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: #513b75;
+    border-radius: 10%;
+    margin: 1rem 0 0 2rem;
+  }
+
+  .message-board {
+    padding: 1% 5% 5% 5%;
+  }
+
+  .message-board-header {
+    color: #513b75;
+    font-size: 3rem;
+    text-shadow: 0.1rem 0.1rem 0.1rem #052600;
+  }
+
+  .message-display-window {
+    background-color: #fff;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: #513b75;
+    border-radius: 1rem;;
+    min-height: 15rem;
+    margin-bottom: 2rem;
+  }
+
+  .message-board-input {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 2rem;
+  }
+
+  .message-board-submit-button {
+
+  }
+
+
 /* Site Footer */
+
+  .site-footer {
+    /*position: fixed;*/
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: #58407e;
+    text-shadow: 0.1rem 0.1rem 0.1rem #845a97;
+
+  }
