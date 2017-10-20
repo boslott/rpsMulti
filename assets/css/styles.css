@@ -1,7 +1,7 @@
 /*
 	style.css for Rock, Paper, Scissors Multiplayer
 	BootCamp at UNC Homework Assignment 7
-  October 14, 2017
+  October 21, 2017
 	Bo Slott
   -------------------------------------------------------------
 */
@@ -81,9 +81,10 @@
 
   .game-views {
     /*outline: 1px dotted red;*/
-    padding: 10% 0;
+    padding: 5% 0;
     margin: 2rem 3rem 0;
     width: 33%;
+    max-height: 25rem;
     border-style: solid;
     border-width: 0.15rem;
     border-color: #000;
@@ -91,7 +92,7 @@
   }
 
   #gameView {
-    background-image: url("../images/redBlueVSreal.png");
+    background-image: url("../images/purpleActionBG.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -170,8 +171,43 @@
     border-radius: 2rem;
   }
 
-  .message-board-submit-button {
+  .player-choices-row {
+    /*outline: 1px dotted red;*/
+  }
 
+  .player-choice-header {
+    font-size: 2rem;
+    /*outline: 1px dotted red;*/
+  }
+
+  .player-choices {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+    /*outline: 1px dotted red;*/
+  }
+
+  .player-choice-img {
+    width: 25%;
+    /*outline: 1px dotted red;*/
+  }
+
+  #battleRow2 {
+    margin: 3rem 0 0;
+  }
+
+  .battle-view-images {
+    margin: 0 1rem;
+  }
+
+  #space {
+    font-size: 2rem;
+    color: #fff;
+  }
+
+  #winnerDisp {
+    font-size: 2rem;
+    color: #fff;
   }
 
 

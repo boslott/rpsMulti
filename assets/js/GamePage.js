@@ -2,7 +2,7 @@
     GamePage Object Constructor Function
     Rock, Paper, Scissors Multiplayer Project
     BootCamp at UNC Homework Assignment 7
-    October 14, 2017
+    October 21, 2017
     Bo Slott
 */
 
@@ -14,6 +14,7 @@ function GamePage() {
     pageElements.go();
 
     var rpsMulti = new RPSMulti();
+
     rpsMulti.go();
   };
 
