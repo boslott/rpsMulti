@@ -26,6 +26,18 @@
     background-size: cover;
   }
 
+  body.enact1 .disable-p1 {
+    pointer-events: none;
+  }
+
+  body.enact2 .disable-p2 {
+    pointer-events: none;
+  }
+
+  body.enact3 .spectator {
+    pointer-events: none;
+  }
+
   .site-body {
 
     /*width: 100%;*/

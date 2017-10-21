@@ -4,6 +4,18 @@
     BootCamp at UNC Homework Assignment 7
     October 21, 2017
     Bo Slott
+
+    Issues:
+
+    - Need to add a removeEventListener to the window so the enter key does not render additional game boards
+
+    - Not sure why, but the winner name dislay is quirky. On one player's screen one name will appear as the winner and on the other player's screen another will appear. Or, the same name will appear, or one will say "tie" and one will say a winner, or the player that choices first will show the "default" as winning
+
+    - The message board needs more work. Need to pull in the messages from FireBase to display the history
+
+    - The thisPlayer.name needs adjustment so the onunload function will be able to remove the player's data upon leaving.
+
+
 */
 
 
@@ -17,7 +29,7 @@ function RPSMulti() {
   this.player1 = new RPSPlayer("Player-1");
   this.player2 = new RPSPlayer("Player-2");
   this.thisPlayer = "";
-  this.winner;
+  this.winner = "default";
   this.dataRef = {};
   this.gameStatusRef = {};
   this.playerListRef = {};
@@ -131,6 +143,7 @@ function RPSMulti() {
       window.addEventListener("keyup", function(event) {
         if(event.key === "Enter" && input.value !== "") {
           var newName = input.value;
+          appObj.thisPlayer = newName;
           appObj.renderGameBoards();
           appObj.beginGamePlay(newName, appObj);
         }
@@ -316,7 +329,7 @@ function RPSMulti() {
         for (i; i<3; i++) {
           var newImg = document.createElement("img");
           newImg.src = "assets/images/" + choices[i] + ".png";
-          newImg.className = "player1-choice-img disable-p1";
+          newImg.className = "player1-choice-img disable-p2 spectator";
           newImg.id = choices[i] + "1Choice";
           newImg.val = choices[i] + "1";
           newWrap.appendChild(newImg);
@@ -325,7 +338,7 @@ function RPSMulti() {
         for (i; i<3; i++) {
           var newImg = document.createElement("img");
           newImg.src = "assets/images/" + choices[i] + ".png";
-          newImg.className = "player2-choice-img disable-p2";
+          newImg.className = "player2-choice-img disable-p1 spectator";
           newImg.id = choices[i] + "2Choice";
           newImg.val = choices[i] + "2";
           newWrap.appendChild(newImg);
@@ -349,6 +362,7 @@ function RPSMulti() {
     this.renderPlayerChoices("youView");
     this.renderPlayerChoices("opponentView");
     this.choosePlay();
+    this.playerLeaves(appObj);
     this.sendMessage(appObj);
 
   };
@@ -379,21 +393,21 @@ function RPSMulti() {
 
       switch (status) {
         case 0:
-          document.getElementsByTagName("body").className = "disable-p2";
+          document.querySelector("body").className = "enact1";
           appObj.thisPlayer = newName;
           appObj.player1.name = newName;
           appObj.playersListRef.child("one").set(appObj.player1);
           appObj.setOnePlayerScene(appObj);
           break;
         case 1:
-          document.getElementsByTagName("body").className = "disable-p1";
+          document.querySelector("body").className = "enact2";
           appObj.thisPlayer = newName;
           appObj.player2.name = newName;
           appObj.playersListRef.child("two").set(appObj.player2);
           appObj.setTwoPlayerScene(appObj);
           break;
         case 2:
-          document.getElementsByTagName("body").className = "spectator";
+          document.querySelector("body").className = "enact3";
           appObj.setSpectatorScene(appObj);
           break;
         default:
@@ -466,7 +480,6 @@ function RPSMulti() {
     var rock1 = document.getElementById("rock1Choice");
     var paper1 = document.getElementById("paper1Choice");
     var scissors1 = document.getElementById("scissors1Choice");
-    // var youViewBox = document.getElementById("youView");
     var rock2 = document.getElementById("rock2Choice");
     var paper2 = document.getElementById("paper2Choice");
     var scissors2 = document.getElementById("scissors2Choice");
@@ -475,49 +488,55 @@ function RPSMulti() {
 
 
     rock1.addEventListener("click", function() {
-      appObj.player1CurrentChoice = "rock";
+      appObj.player1.choice = "rock";
+      appObj.playersListRef.child("one").update({"choice":appObj.player1.choice});
       appObj.displayChoice("rock", appObj, 1);
-      var outcome = appObj.comparePlays();
+      var outcome = appObj.comparePlays(appObj);
       appObj.updateScores(outcome, appObj);
       appObj.renderBattleView(appObj);
     });
 
     paper1.addEventListener("click", function() {
-      appObj.player1CurrentChoice = "paper";
+      appObj.player1.choice = "paper";
+      appObj.playersListRef.child("one").update({"choice":appObj.player1.choice});
       appObj.displayChoice("paper", appObj, 1);
-      var outcome = appObj.comparePlays();
+      var outcome = appObj.comparePlays(appObj);
       appObj.updateScores(outcome, appObj);
       appObj.renderBattleView(appObj);
     });
 
     scissors1.addEventListener("click", function() {
-      appObj.player1CurrentChoice = "scissors";
+      appObj.player1.choice = "scissors";
+      appObj.playersListRef.child("one").update({"choice":appObj.player1.choice});
       appObj.displayChoice("scissors", appObj, 1);
-      var outcome = appObj.comparePlays();
+      var outcome = appObj.comparePlays(appObj);
       appObj.updateScores(outcome, appObj);
       appObj.renderBattleView(appObj);
     });
 
     rock2.addEventListener("click", function() {
-      appObj.player2CurrentChoice = "rock";
+      appObj.player2.choice = "rock";
+      appObj.playersListRef.child("two").update({"choice":appObj.player2.choice});
       appObj.displayChoice("rock", appObj, 2);
-      var outcome = appObj.comparePlays();
+      var outcome = appObj.comparePlays(appObj);
       appObj.updateScores(outcome, appObj);
       appObj.renderBattleView(appObj);
     });
 
     paper2.addEventListener("click", function() {
-      appObj.player2CurrentChoice = "paper";
+      appObj.player2.choice = "paper";
+      appObj.playersListRef.child("two").update({"choice":appObj.player2.choice});
       appObj.displayChoice("paper", appObj, 2);
-      var outcome = appObj.comparePlays();
+      var outcome = appObj.comparePlays(appObj);
       appObj.updateScores(outcome, appObj);
       appObj.renderBattleView(appObj);
     });
 
     scissors2.addEventListener("click", function() {
-      appObj.player2CurrentChoice = "scissors";
+      appObj.player2.choice = "scissors";
+      appObj.playersListRef.child("two").update({"choice":appObj.player2.choice});
       appObj.displayChoice("scissors", appObj, 2);
-      var outcome = appObj.comparePlays();
+      var outcome = appObj.comparePlays(appObj);
       appObj.updateScores(outcome, appObj);
       appObj.renderBattleView(appObj);
     });
@@ -567,36 +586,41 @@ function RPSMulti() {
     }
   };
 
-  this.comparePlays = function() {
+  this.comparePlays = function(appObj) {
+    var appObj = appObj;
+    var p1 = "";
+    var p2 = "";
 
-    var val1 = this.player1CurrentChoice;
-    var val2 = this.player2CurrentChoice;
+    appObj.playersListRef.once("value", function(snapshot) {
+      p1 = snapshot.val().one.choice;
+      p2 = snapshot.val().two.choice;
+    });
 
-    if(val1 === "" || val2 === "") {
+    if(p1 === "" || p2 === "") {
       return "n";
     }
 
-    if (val1 === val2) {
+    if (p1 === p2) {
       return "t";
     }
-    if (val1 === "rock") {
-      if (val2 === "scissors") {
+    if (p1 === "rock") {
+      if (p2 === "scissors") {
         return "p1";
       }
       else {
         return "p2";
       }
     }
-    if (val1 === "paper") {
-      if (val2 === "rock") {
+    if (p1 === "paper") {
+      if (p2 === "rock") {
         return "p1";
       }
       else {
         return "p2";
       }
     }
-    if (val1 === "scissors") {
-      if (val2 === "paper") {
+    if (p1 === "scissors") {
+      if (p2 === "paper") {
         return "p1";
       }
       else {
@@ -608,43 +632,56 @@ function RPSMulti() {
 
   this.updateScores = function(outcome, appObj) {
     var appObj = appObj;
-    var p1 = appObj.player1;
-    var p2 = appObj.player2;
-    if(outcome === "n") {
-      return;
-    } else if(outcome === "p1") {
-      p1.wins++;
-      p2.losses++;
-      appObj.winner = p1.name;
-      appObj.playersListRef.child("one").set(p1);
-      appObj.playersListRef.child("two").set(p2);
-    } else if(outcome === "p2") {
-      p2.wins++;
-      p1.losses++;
-      appObj.winner = p2.name;
-      appObj.playersListRef.child("two").set(p2);
-      appObj.playersListRef.child("one").set(p1);
-    } else {
-      p1.ties++;
-      p2.ties++;
-      appObj.winner = "t";
-      appObj.playersListRef.child("two").set(p2);
-      appObj.playersListRef.child("one").set(p1);
-    }
+    var outcome = outcome;
+
+    appObj.playersListRef.once("value", function(snapshot) {
+      var p1 = snapshot.val().one;
+      var p2 = snapshot.val().two;
+
+      if(outcome === "n") {
+        return;
+      } else if(outcome === "p1") {
+        p1.wins++;
+        p2.losses++;
+        appObj.winner = p1.name;
+        appObj.playersListRef.child("one").set(p1);
+        appObj.playersListRef.child("two").set(p2);
+      } else if(outcome === "p2") {
+        p2.wins++;
+        p1.losses++;
+        appObj.winner = p2.name;
+        appObj.playersListRef.child("two").set(p2);
+        appObj.playersListRef.child("one").set(p1);
+      } else {
+        p1.ties++;
+        p2.ties++;
+        appObj.winner = "t";
+        appObj.playersListRef.child("two").set(p2);
+        appObj.playersListRef.child("one").set(p1);
+      }
+    });
   };
 
   this.renderBattleView = function(appObj) {
     var appObj = appObj;
     var br = document.getElementById("battleRow1");
     var br2 = document.getElementById("battleRow2");
-    var p1 = appObj.player1CurrentChoice;
-    var p2 = appObj.player2CurrentChoice;
+    var p1 = {};
+    var p2 = {};
 
-    if (p1 !== "" && p2 !== "") {
+
+
+    appObj.playersListRef.once("value", function(snapshot) {
+      p1 = snapshot.val().one;
+      p2 = snapshot.val().two;
+    });
+
+    if (p1.choice !== "" && p2.choice !== "") {
+
       var newImg = document.createElement("img");
       newImg.className = "battle-view-images";
       newImg.id = "player1Choice";
-      newImg.src = "assets/images/" + appObj.player1CurrentChoice + ".png";
+      newImg.src = "assets/images/" + appObj.player1.choice + ".png";
 
       var space = document.createElement("span");
       space.id = "space";
@@ -653,11 +690,13 @@ function RPSMulti() {
       var newImg2 = document.createElement("img");
       newImg2.className = "battle-view-images";
       newImg2.id = "player2Choice";
-      newImg2.src = "assets/images/" + appObj.player2CurrentChoice + ".png";
+      newImg2.src = "assets/images/" + appObj.player2.choice + ".png";
 
       br.appendChild(newImg);
       br.appendChild(space);
       br.appendChild(newImg2);
+
+
 
       var winnerDisp = document.createElement("span");
       winnerDisp.id = "winnerDisp";
@@ -669,6 +708,10 @@ function RPSMulti() {
       br2.appendChild(winnerDisp);
 
       setTimeout(appObj.newRound, 2000, appObj);
+    }  else {
+      setTimeout(function() {
+        appObj.renderBattleView(appObj);
+      }, 100);
     }
   };
 
@@ -677,13 +720,28 @@ function RPSMulti() {
     document.getElementById("youView").textContent = "";
     document.getElementById("gameView").textContent = "";
     document.getElementById("opponentView").textContent = "";
-    appObj.player1CurrentChoice = "";
-    appObj.player2CurrentChoice = "";
+    appObj.playersListRef.child("one").update({"choice":""});
+    appObj.playersListRef.child("two").update({"choice":""});
 
     appObj.renderPlayerChoices("youView");
     appObj.renderPlayerChoices("opponentView");
     appObj.renderBattleRows();
     appObj.choosePlay();
+  };
+
+  this.playerLeaves = function(appObj) {
+    var appObj = appObj;
+    console.log("this.player = " + appObj.thisPlayer);
+    console.log("p1.name = " + appObj.player1.name);
+    console.log("p2.name = " + appObj.player2.name);
+    var body = document.querySelector("body");
+    body.addEventListener("unload", function() {
+      if (appObj.thisPlayer === appObj.player1.name) {
+        appObj.playersListRef.child("one").remove();
+      } else {
+        appObj.playerListRef.child("two").remove();
+      }
+    });
   };
 
   this.sendMessage = function(appObj) {
@@ -695,24 +753,15 @@ function RPSMulti() {
       "name": "",
       "message": ""
     };
-    var i =0;
-    console.log(mesObj.name + " says hi");
-    console.log(appObj.thisPlayer + " also says hi");
+    var newBr = document.createElement("br");
     messageBtn.addEventListener("click", function() {
       mesObj.name = appObj.thisPlayer;
-      console.log(mesObj.name);
       mesObj.message = mes.value;
       appObj.messagesListRef.push(mesObj);
+      mes.textContent = "";
+      mesWin.textContent+=(mesObj.name + ": " + mesObj.message);
+      mewWin.textContent+= newBr;
     });
-
-    // appObj.messagesListRef.once("value").then(function(snapshot) {
-    //   for (i; i<snapshot.length; i++) {
-    //     mesList = snapshot[i] + "<br />";
-    //     console.log(mesList);
-    //   }
-    // });
-
-    // mesWin.textContent = mesList;
   };
 
 
